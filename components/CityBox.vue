@@ -1,0 +1,299 @@
+<template>
+  <div class="col second-col">
+    <div class="individual-block">
+      <div class="top-infos">
+        <span class="secondCity">{{ city }}, {{ country }}</span>
+      </div>
+      <div class="temperature secondloading">
+        <span class="secondTemp low-temp" v-if="temperature <= 5">{{ temperature }}</span>
+        <span class="secondTemp medium-temp" v-else-if="temperature > 5 && temperature <= 25">{{ temperature }}</span>
+        <span class="secondTemp high-temp" v-else>{{ temperature }}</span>
+      </div>
+      <div class="extra-infos-temperature">
+        <div class="row extrasInfos">
+          <div class="col no-gutters">
+            <p>humidity</p>
+            <span class="secondHumidity">{{ humidity }}</span>
+          </div>
+          <div class="col no-gutters">
+            <p>pressure</p>
+            <span class="secondPressure">{{ pressure }}</span>
+          </div>
+        </div>
+        <div class="updated">Updated at <span class="secondDt">{{ updateAt }}</span></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ["cityName", "cityCountry"],
+  beforeMount() {
+    this.getData();
+  },
+  data() {
+    return {
+      city: this.cityName,
+      country: this.cityCountry,
+      temperature: '',
+      pressure: '',
+      humidity: '',
+      updateAt: '',
+    };
+  },
+  methods: {
+    async getData() {
+      const data = await this.$axios.$get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${this.cityName},${this.cityCountry}&units=metric&appid=76bf9d701a655d8e1d5d7d7b6924839f`
+      );
+      this.pressure = data.main.pressure;
+      this.temperature = parseInt(`${data.main.temp}`, 10);
+      this.humidity = data.main.humidity;
+      this.updateAt = new Date(data.dt).toLocaleTimeString("en-US");
+    },
+  },
+};
+</script>
+
+
+<style>
+body {
+  background: #f1f1f1;
+  margin: 0;
+  font-family: "Helvetica", "Arial", sans-serif;
+  letter-spacing: 0.02em;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+}
+small {
+  font-size: 12px;
+}
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+ul li {
+  list-style: none;
+}
+figure {
+  margin: 0px;
+  padding: 0px;
+}
+section {
+  display: block;
+}
+main {
+  height: 100%;
+  min-height: 100%;
+}
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.col {
+  display: flex;
+  justify-content: center;
+  padding-right: 15px;
+  flex: 1;
+  padding-left: 15px;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+header {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+#list-of-cities {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 100%;
+}
+#list-of-cities .individual-block {
+  display: block;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+#list-of-cities .individual-block .extra-infos-temperature {
+  padding: 0px;
+  margin: 0px;
+  background-color: rgba(241, 241, 241, 0.5);
+  text-align: center;
+}
+#list-of-cities .individual-block .extra-infos-temperature p {
+  color: #b4b4b4;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+#list-of-cities .individual-block .extra-infos-temperature span {
+  color: #737c84;
+  font-size: 20px;
+}
+#list-of-cities .individual-block .extra-infos-temperature .updated {
+  font-size: 10px;
+  color: #737c84;
+  padding: 20px 0;
+}
+#list-of-cities .individual-block .extra-infos-temperature .updated span {
+  font-size: 10px;
+}
+#list-of-cities .individual-block .extra-infos-temperature .extrasInfos {
+  padding-top: 1em;
+}
+#list-of-cities .individual-block .top-infos {
+  border-bottom: 1px solid #ebebeb;
+  color: #737c84;
+  text-align: center;
+  padding: 13px 0px;
+  font-size: 1.1rem;
+}
+#list-of-cities .individual-block .temperature {
+  font-size: 5em;
+  padding: 30px 0;
+  margin: 0px;
+  text-align: center;
+  display: block;
+  font-weight: 500;
+  justify-content: center;
+  display: flex;
+}
+#list-of-cities .individual-block .temperature .high-temp {
+  color: #ed1946;
+}
+#list-of-cities .individual-block .temperature .low-temp {
+  color: #69a3ff;
+}
+#list-of-cities .individual-block .temperature .medium-temp {
+  color: #ff9632;
+}
+#list-of-cities .individual-block .temperature .danger {
+  font-size: 16px;
+  font-weight: 500;
+  color: #ed1946;
+}
+#list-of-cities .individual-block .temperature .try-again-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  background: #fff;
+  border: 2px solid #737c84;
+  color: #737c84;
+  border-radius: 30px;
+  box-shadow: none;
+  padding: 7px 15px;
+}
+#list-of-cities .loading,
+#list-of-cities .loading2,
+#list-of-cities .loading3 {
+  width: 30px;
+  height: 30px;
+  border: 5px solid #737c84;
+  border-top: 5px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.5s linear 0s infinite;
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+@media (max-width: 768px) {
+  header {
+    z-index: 1;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  }
+  main {
+    padding-top: 5em;
+    height: auto;
+  }
+  .col {
+    flex: auto;
+  }
+  .no-gutters {
+    flex: 1;
+  }
+  #list-of-cities .individual-block {
+    margin-bottom: 2em;
+  }
+  #list-of-cities .first-col {
+    order: 2;
+  }
+  #list-of-cities .second-col {
+    order: 1;
+  }
+  #list-of-cities .third-col {
+    order: 3;
+  }
+}
+</style>
