@@ -91,8 +91,4 @@
   </svg>
 </template>
 
-<style>
-.logoApp {
-  width:  200px;
-}
-</style>
+
