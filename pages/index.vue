@@ -1,10 +1,17 @@
 <template>
-  <div>
+  <div class="principal">
+    <header>
+      <Logo />
+    </header>
     <main>
       <section id="list-of-cities">
-        <CityBox cityName="Nuuk" cityCountry="GL"/>
-        <CityBox cityName="Urubici" cityCountry="BR" />
-        <CityBox cityName="Nairobi" cityCountry="KE"/>
+        <div class="container">
+          <div class="row">
+            <CityBox cityName="Nuuk" cityCountry="GL" />
+            <CityBox cityName="Urubici" cityCountry="BR" />
+            <CityBox cityName="Nairobi" cityCountry="KE" />
+          </div>
+        </div>
       </section>
     </main>
   </div>
