@@ -112,6 +112,10 @@ export default {
       error: false,
     };
   },
+  // atualiza a api a cada 10min
+  created() {
+    setInterval(this.getData, 600000);
+  },
   methods: {
     async getData() {
       const data = await this.$axios
@@ -123,6 +127,7 @@ export default {
           this.temperature = parseInt(`${response.main.temp}`, 10);
           this.humidity = response.main.humidity;
           this.updateAt = new Date(response.dt).toLocaleTimeString("en-US");
+          this.timestamp = Date.now;
           this.loading = false;
           this.error = false;
         })
@@ -131,6 +136,7 @@ export default {
           this.error = true;
         });
     },
+
     retry() {
       this.loading = true;
       this.error = false;
