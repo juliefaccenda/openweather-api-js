@@ -14,6 +14,7 @@
         </div>
       </section>
     </main>
+    <footer></footer>
   </div>
 </template>
 

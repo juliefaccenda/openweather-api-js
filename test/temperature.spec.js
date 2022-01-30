@@ -11,7 +11,7 @@ describe('Mounted App', () => {
     })
     
     test('se as variaveis recebem os dados', () => {
-        console.log(wrapper.vm.$data.city)
+        console.log(wrapper.vm.$data)
     })
     // test('O Componente é uma instancia do vue', () => {        
     //     expect(wrapper.isVueInstance()).toBeTruthy();

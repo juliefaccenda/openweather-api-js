@@ -6,7 +6,7 @@
       </div>
       <div class="lowInfos">
         <div class="temperature">
-          <div class="loading" v-show="loading">
+          <div class="loading" v-show="$fetchState.pending">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="50px"
@@ -57,33 +57,43 @@
               </circle>
             </svg>
           </div>
-          <div class="danger" v-show="error">
+          <div class="danger" v-show="$fetchState.error">
             <span>Something went wrong</span>
             <button @click="retry">Try Again</button>
           </div>
-          <span class="low-temp" v-if="temperature <= 5">{{
-            temperature
-          }}</span>
-          <span
-            class="medium-temp"
-            v-else-if="temperature > 5 && temperature <= 25"
-            >{{ temperature }}</span
+          <div
+            class="sucess"
+            v-show="!$fetchState.pending && !$fetchState.error"
           >
-          <span class="high-temp" v-else>{{ temperature }}</span>
+            <span class="low-temp" v-if="temperature <= 5">{{
+              temperature + "&deg;"
+            }}</span>
+            <span
+              class="medium-temp"
+              v-else-if="temperature > 5 && temperature <= 25"
+              >{{ temperature + "&deg;" }}</span
+            >
+            <span class="high-temp" v-else>{{ temperature + "&deg;" }}</span>
+          </div>
         </div>
         <div class="extra-infos-temperature">
-          <div class="row extrasInfos">
-            <div class="col no-gutters">
-              <p>humidity</p>
-              <span>{{ humidity }}<small>%</small></span>
+          <div
+            class="sucess"
+            v-show="!$fetchState.pending && !$fetchState.error"
+          >
+            <div class="row extrasInfos">
+              <div class="col no-gutters">
+                <p>humidity</p>
+                <span>{{ humidity }}<small>%</small></span>
+              </div>
+              <div class="col no-gutters">
+                <p>pressure</p>
+                <span>{{ pressure }}<small>hPa</small></span>
+              </div>
             </div>
-            <div class="col no-gutters">
-              <p>pressure</p>
-              <span>{{ pressure }}<small>hPa</small></span>
+            <div class="updated">
+              Updated at <span>{{ updateAt }}</span>
             </div>
-          </div>
-          <div class="updated">
-            Updated at <span>{{ updateAt }}</span>
           </div>
         </div>
       </div>
@@ -93,10 +103,15 @@
 
 <script>
 export default {
-  name: 'App',
+  name: "App",
   props: ["cityName", "cityCountry"],
   async beforeMount() {
-    await this.getData();
+    await this.$fetch();
+  },
+  async created() {
+    setInterval(async () => {
+      await this.$fetch();
+    }, 600000);
   },
   data() {
     return {
@@ -106,36 +121,30 @@ export default {
       pressure: "",
       humidity: "",
       updateAt: "",
-      loading: true,
-      error: false,
     };
   },
+  activated() {
+    if (this.$fetch.timestamp <= Date.now() - 600000) {
+      this.$fetch();
+    }
+  },
+  async fetch() {
+    const data = await this.$axios
+      .$get(
+        `${process.env.apiBaseUrl}?q=${this.cityName},${this.cityCountry}&units=metric&appid=${process.env.apiKey}`
+      )
+      .then((response) => {
+        this.pressure = response.main.pressure;
+        this.temperature = parseInt(`${response.main.temp}`, 10);
+        this.humidity = response.main.humidity;
+        this.updateAt = new Date(response.dt).toLocaleTimeString("en-US");
+      });
+  },
   methods: {
-    async getData() {
-      const data = await this.$axios
-        .$get(
-          `https://api.openweathermap.org/data/2.5/weather?q=${this.cityName},${this.cityCountry}&units=metric&appid=76bf9d701a655d8e1d5d7d7b6924839f`
-        )
-        .then((response) => {
-          this.pressure = response.main.pressure;
-          this.temperature = parseInt(`${response.main.temp}`, 10);
-          this.humidity = response.main.humidity;
-          this.updateAt = new Date(response.dt).toLocaleTimeString("en-US");
-          this.loading = false;
-          this.error = false;
-        })
-        .catch(() => {
-          this.loading = false;
-          this.error = true;
-        });
-    },
     retry() {
-      this.loading = true;
-      this.error = false;
-      this.getData();
+      this.$fetch();
     },
   },
 };
-
 </script>
 
