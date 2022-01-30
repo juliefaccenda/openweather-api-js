@@ -13,6 +13,8 @@ API_KEY=1959e6c59a197f0a9e8110393ac503a7
 
 # serve with hot reload at localhost:3000
 $ npm run dev
+Or
+$ npm run start
 
 
 ### Information abou the project
