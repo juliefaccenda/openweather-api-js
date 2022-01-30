@@ -13,22 +13,14 @@ API_KEY=1959e6c59a197f0a9e8110393ac503a7
 
 # serve with hot reload at localhost:3000
 $ npm run dev
-<<<<<<< HEAD
-
-
-### Information abou the project
-
-This project was created using nuxt.js/vue.js, axios, HTML, CSS with Sass and Jest for the tests.
-=======
-Or
 $ npm run start
 
 
-### Information abou the project
+### Information about the project
 
 This project was created using nuxt.js/vue.js, axios, HTML, CSS with Sass and Jest for the tests.
 The API was OpenWeatherMap (For more details, check out the [documentation](https://api.openweathermap.org/))
->>>>>>> 5df949c177e8df3b655f8bc6a8fa8db6c143a6c9
+
 
 ### `assets`
 
