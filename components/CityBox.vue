@@ -129,6 +129,9 @@ export default {
     }
   },
   async fetch() {
+    //   if se as variaveis existem, se nao existir roda normal
+    // se existir verifica tempo >= 600000
+    // se for menor nao executa o resquest se for maior executa
     const data = await this.$axios
       .$get(
         `${process.env.apiBaseUrl}?q=${this.cityName},${this.cityCountry}&units=metric&appid=${process.env.apiKey}`

@@ -299,6 +299,9 @@ header {
 		&:nth-child(3) {
 			order: 3;
 		}
+		.extrasInfos{
+			display: flex!important;
+		}
 	}
 }
 
