@@ -2,21 +2,21 @@
 
 ## Build Setup
 
-```bash
-# install dependencies
+
+### install dependencies
 $ npm install
 
-# create a file name '.env' in project root and place the following informations
+### create a file name '.env' in project root and place the following informations
 
 API_BASE_URL=https://api.openweathermap.org/data/2.5/weather
 API_KEY=1959e6c59a197f0a9e8110393ac503a7
 
-# serve with hot reload at localhost:3000
+### serve with hot reload at localhost:3000
 $ npm run dev
 $ npm run start
 
 
-### Information about the project
+## Information about the project
 
 This project was created using nuxt.js/vue.js, axios, HTML, CSS with Sass and Jest for the tests.
 The API was OpenWeatherMap (For more details, check out the [documentation](https://api.openweathermap.org/))
