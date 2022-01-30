@@ -73,19 +73,21 @@
             <span class="high-temp" v-else>{{ temperature + "&deg;" }}</span>
           </div>
         </div>
-        <div class="extra-infos-temperature">
-          <div class="row extrasInfos">
-            <div class="col no-gutters">
-              <p>humidity</p>
-              <span>{{ humidity }}<small>%</small></span>
+        <div class="sucess" v-show="!loading && !error">
+          <div class="extra-infos-temperature">
+            <div class="row extrasInfos">
+              <div class="col no-gutters">
+                <p>humidity</p>
+                <span>{{ humidity }}<small>%</small></span>
+              </div>
+              <div class="col no-gutters">
+                <p>pressure</p>
+                <span>{{ pressure }}<small>hPa</small></span>
+              </div>
             </div>
-            <div class="col no-gutters">
-              <p>pressure</p>
-              <span>{{ pressure }}<small>hPa</small></span>
+            <div class="updated">
+              Updated at <span>{{ updateAt }}</span>
             </div>
-          </div>
-          <div class="updated">
-            Updated at <span>{{ updateAt }}</span>
           </div>
         </div>
       </div>
