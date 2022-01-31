@@ -3,6 +3,8 @@ export default {
     apiBaseUrl: process.env.API_BASE_URL,
     apiKey: process.env.API_KEY,
   },
+  ssr: false,
+  
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Projeto Conta Azul',

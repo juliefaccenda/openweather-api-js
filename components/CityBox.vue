@@ -96,6 +96,10 @@
 </template>
 
 <script>
+import Vue from "vue";
+import VueCookies from "vue-cookies";
+Vue.use(VueCookies);
+
 export default {
   name: "App",
   props: ["cityName", "cityCountry"],
@@ -120,11 +124,23 @@ export default {
   },
   methods: {
     async getData() {
-      const data = await this.$axios
+      if (this.$cookies.isKey(`cookie-temperature-${this.cityName}`)) {
+        this.getCacheData();
+      } else {
+        await this.getApiData();
+      }
+    },
+    async getApiData() {
+      await this.$axios
         .$get(
           `https://api.openweathermap.org/data/2.5/weather?q=${this.cityName},${this.cityCountry}&units=metric&appid=76bf9d701a655d8e1d5d7d7b6924839f`
         )
         .then((response) => {
+          this.$cookies.set(
+            `cookie-temperature-${this.cityName}`,
+            response,
+            600
+          );
           this.pressure = response.main.pressure;
           this.temperature = parseInt(`${response.main.temp}`, 10);
           this.humidity = response.main.humidity;
@@ -138,11 +154,23 @@ export default {
           this.error = true;
         });
     },
+    getCacheData() {
+      const cookieData = this.$cookies.get(
+        `cookie-temperature-${this.cityName}`
+      );
+      this.pressure = cookieData.main.pressure;
+      this.temperature = parseInt(`${cookieData.main.temp}`, 10);
+      this.humidity = cookieData.main.humidity;
+      this.updateAt = new Date(cookieData.dt).toLocaleTimeString("en-US");
+      this.timestamp = Date.now;
+      this.loading = false;
+      this.error = false;
+    },
 
-    retry() {
+    async retry() {
       this.loading = true;
       this.error = false;
-      this.getData();
+      await this.getData();
     },
   },
 };
