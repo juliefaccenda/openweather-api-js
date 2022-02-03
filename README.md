@@ -10,7 +10,7 @@ $ npm install
 
 API_BASE_URL=https://api.openweathermap.org/data/2.5/weather
 
-API_KEY=1959e6c59a197f0a9e8110393ac503a7
+API_KEY=*adicionar sua api Key*
 
 
 ### serve with hot reload at localhost:3000
